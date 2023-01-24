@@ -1,5 +1,8 @@
-from util.DBConnect import getCursor
+from model.Account import Account
+from repository.AccountRepository import AccountRepository
 
-cursor = getCursor()
+account = Account(None, '045oxs', 1, 0.0)
 
-print(cursor)
+repo = AccountRepository()
+
+repo.insert(account)

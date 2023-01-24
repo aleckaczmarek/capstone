@@ -12,3 +12,5 @@ CAPSTONE/
     AccountService.test.py
   util/
     DBConnect.py
+  model/
+    Account.py

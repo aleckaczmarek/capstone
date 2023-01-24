@@ -1,14 +1,17 @@
 import psycopg2
-
-conn = psycopg2.connect(database="db01",
+class DBConnect():
+    conn = psycopg2.connect(database="db01",
                         host="localhost",
                         user="postgres",
                         password="password123",
                         port="5432")
 
-cursor = conn.cursor()
+    def getCursor(self):
+        cursor = self.conn.cursor()
+        return cursor
 
-def getCursor():
-    return cursor
+    def setCommit(self):
+        self.conn.commit()
 
-# cursor.query("INSERT " FROM example_table")
+    def closeConnection(self):
+        self.conn.close()
