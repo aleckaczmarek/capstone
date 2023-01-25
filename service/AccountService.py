@@ -7,12 +7,12 @@ from repository.CustomerRepository import CustomerRepository
 from model.Account import Account
 from random import randint
 import psycopg2
-# o Open a new account
-# o Retrieve information on all accounts
-# o Retrieve information for a specific account
-# o Execute a withdrawal from an existing account
-# o Execute a deposit to an existing account
-# o Close an existing account
+# x Open a new account
+# x Retrieve information on all accounts
+# x Retrieve information for a specific account
+# x Execute a withdrawal from an existing account
+# x Execute a deposit to an existing account
+# x Close an existing account
 class AccountService():
     repo = AccountRepository()
     
@@ -20,13 +20,16 @@ class AccountService():
         repoAddress = AddressRepository()
         repoCustomer = CustomerRepository()
         try:
-            #TODO add logic to check if account exists, if not create account with blank address
             customer:Customer = repoCustomer.get(id)
-            if customer.id != id:
-                addressId = repoAddress.insert(Address(None,"BaseCity", "BaseState", "BaseZip","BaseStreet"))
-                custId = repoCustomer.insert(Customer(None,"NewCust","NewCust",addressId))
-            if amount >= 25 and customer:
-                self.repo.insert(Account(None,(str(randint(10000, 99999))+'-'+str(id)),id, amount ))
+            if type(customer) != Customer and amount >= 25:
+                addressId = repoAddress.insert(Address(None,"BaseCity", "BaseState", "BeZip","BaseStreet"))
+                cid = repoCustomer.insert(Customer(None,"NewCust","NewCust",addressId, "baseemail@email.com"))
+                self.repo.insert(Account(None,(str(randint(10000, 99999))),cid, amount ))
+                return True
+            elif amount >= 25:
+                acct = Account(None,(str(randint(10000, 99999))),id, amount )
+                print(acct)
+                self.repo.insert(acct)
                 return True
             else:
                 return False
@@ -37,7 +40,6 @@ class AccountService():
     def getAccounts(self):
         accounts = False
         try:
-            #TODO add logic to check if account exists, if not create account with blank address
             accounts = self.repo.getAll()
             return accounts
         except (Exception, psycopg2.DatabaseError) as error:
@@ -48,7 +50,6 @@ class AccountService():
     def getAccount(self,id):
         account = False
         try:
-            #TODO add logic to check if account exists, if not create account with blank address
             account = self.repo.get(id)
             return account
         except (Exception, psycopg2.DatabaseError) as error:
@@ -66,6 +67,7 @@ class AccountService():
             else:
                 return False
         except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
             return False
 
     def deposit(self, amount: float, id):
@@ -79,4 +81,20 @@ class AccountService():
             else:
                 return False
         except (Exception, psycopg2.DatabaseError) as error:
+            return False
+
+    def closeAccount(self,id):
+        repoAddress = AddressRepository()
+        repoCustomer = CustomerRepository()
+        try:
+            account:Account = self.repo.get(id)
+            customer:Customer = repoCustomer.get(account.customer_id)
+            address:Address = repoAddress.get(customer.address_id)
+            self.repo.delete(account)
+            repoCustomer.delete(customer)
+            repoAddress.delete(address)
+            return True
+
+        except (Exception, psycopg2.DatabaseError) as error:
+            print("ERROR CREATING ",error)
             return False
