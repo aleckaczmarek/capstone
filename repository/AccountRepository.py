@@ -9,15 +9,15 @@ class AccountRepository():
         dbcon = DBConnect()
         try:
             sql = """INSERT INTO account (accountnumber, customerid, currentbalance)
-             VALUES(%s, %s, %s);"""
+             VALUES(%s, %s, %s) RETURNING id;"""
             cursor = dbcon.getCursor()
             cursor.execute(sql, (account.account_number, account.customer_id, account.current_balance))
+            id = cursor.fetchone()[0]
             dbcon.setCommit()
             cursor.close()
+            return id
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
-        finally:
-            dbcon.closeConnection()
      
     def update(self, account: Account):
         dbcon = DBConnect()
@@ -29,8 +29,6 @@ class AccountRepository():
             cursor.close()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
-        finally:
-            dbcon.closeConnection()
     
     def getAll(self):
         dbcon = DBConnect()
@@ -47,7 +45,6 @@ class AccountRepository():
             print(error)
             return None
         finally:
-            dbcon.closeConnection()
             return accounts
 
     def get(self, id):
@@ -64,7 +61,6 @@ class AccountRepository():
             print(error)
             return account
         finally:
-            dbcon.closeConnection()
             return account
 
     def delete(self, account: Account):
@@ -77,5 +73,3 @@ class AccountRepository():
             cursor.close()
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
-        finally:
-            dbcon.closeConnection()

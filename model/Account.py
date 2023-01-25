@@ -7,6 +7,9 @@ class Account(BaseModel):
     customer_id: int
     current_balance: float
 
+    def updateBalance(self,amount):
+        self.current_balance = amount
+
     def __init__(self,id, account_number,customer_id,current_balance):
         super().__init__(id=id, account_number=account_number, customer_id=customer_id, current_balance=current_balance)
 
