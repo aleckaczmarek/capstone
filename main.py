@@ -1,8 +1,9 @@
 from model.Account import Account
 from repository.AccountRepository import AccountRepository
 
-account = Account(23, 'acctn', 1, 5.0)
+account = Account(None, 'other', 1, 0.0)
 
 repo = AccountRepository()
-
-repo.delete(account)
+# repo.insert(account)
+data = repo.get(24)
+print(data)

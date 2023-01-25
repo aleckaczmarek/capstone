@@ -31,7 +31,42 @@ class AccountRepository():
             print(error)
         finally:
             dbcon.closeConnection()
-     
+    
+    def getAll(self):
+        dbcon = DBConnect()
+        accounts = []
+        try:
+            sql = """SELECT * from account;"""
+            cursor = dbcon.getCursor()
+            cursor.execute(sql, ())
+            data = cursor.fetchall()
+            for account in data:
+                accounts.append(Account(account[0],account[1],account[2],account[3]))
+            cursor.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            return None
+        finally:
+            dbcon.closeConnection()
+            return accounts
+
+    def get(self, id):
+        dbcon = DBConnect()
+        account = None
+        try:
+            sql = """SELECT * from account WHERE id = %s;"""
+            cursor = dbcon.getCursor()
+            cursor.execute(sql, (str(id),))
+            data = cursor.fetchall()
+            account = Account(data[0][0],data[0][1],data[0][2],data[0][3])
+            cursor.close()
+        except (Exception, psycopg2.DatabaseError) as error:
+            print(error)
+            return account
+        finally:
+            dbcon.closeConnection()
+            return account
+
     def delete(self, account: Account):
         dbcon = DBConnect()
         try:
