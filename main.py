@@ -8,26 +8,13 @@ from typing import List
 # x Retrieve information for a specific account
 # x Execute a withdrawal from an existing account
 # x Execute a deposit to an existing account
-# o Close an existing account
+# o Close an existing account       
 app = FastAPI()
 service = AccountService()
     
 @app.get('/api/accounts', response_model=List[Account])
 async def retrieve_accounts():
     return service.getAccounts()
-
-
-# @app.get('/api/products/{product_number}')
-# async def retrieve_product_by_number(product_number):
-#     product = product_service.get_one(product_number)
-#     if product:
-#         return product
-#     else:
-#         return {}
-
-# @app.post('/api/products/new')
-# async def create_product(product: Product):
-#     return product_service.add_new(product)
 
 @app.get('/api/account/{id}')
 async def get_account(id):
