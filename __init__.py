@@ -14,3 +14,6 @@ CAPSTONE/
     DBConnect.py
   model/
     Account.py
+  tests/
+    test_account_repository.py
+    test_address_repository.py

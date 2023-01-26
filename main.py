@@ -8,7 +8,7 @@ from typing import List
 # x Retrieve information for a specific account
 # x Execute a withdrawal from an existing account
 # x Execute a deposit to an existing account
-# o Close an existing account       
+# x Close an existing account       
 app = FastAPI()
 service = AccountService()
     

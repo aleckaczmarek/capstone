@@ -27,8 +27,10 @@ class AccountRepository():
             cursor.execute(sql, (account.account_number, account.customer_id, account.current_balance, account.id))
             dbcon.setCommit()
             cursor.close()
+            return True
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
+            return False
     
     def getAll(self):
         dbcon = DBConnect()
