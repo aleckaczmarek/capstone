@@ -1,7 +1,7 @@
 import psycopg2
 class DBConnect():
     conn = psycopg2.connect(database="db01",
-                        host="localhost",
+                        host="capstone-ch4-g4-db.ckokfd9swhyk.us-west-2.rds.amazonaws.com",
                         user="postgres",
                         password="password123",
                         port="5432")
